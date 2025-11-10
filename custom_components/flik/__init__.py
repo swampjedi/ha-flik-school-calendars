@@ -1,4 +1,5 @@
 """The Nutrislice Food Calendars integration."""
+
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
@@ -8,15 +9,13 @@ from homeassistant.core import HomeAssistant
 from .const import CONF_ORGANIZATION, DOMAIN
 from .nutrislice.api import NutrisliceAPI
 
-# TODO List the platforms that you want to support.
-# For your initial PR, limit it to 1 platform.
 PLATFORMS: list[Platform] = [Platform.CALENDAR]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Nutrislice Food Calendars from a config entry."""
     hass.data.setdefault(DOMAIN, {})
-
+    # print(entry.data[CONF_ORGANIZATION])
     # create nutrislice api
     api = NutrisliceAPI(entry.data[CONF_ORGANIZATION])
     # store so platforms can access

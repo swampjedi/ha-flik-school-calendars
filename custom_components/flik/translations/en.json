@@ -1,0 +1,41 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "This menu is already configured."
+        },
+        "error": {
+            "already_configured": "This menu is already configured.",
+            "invalid_organization": "Unable to connect to Nutrislice API endpoint. Check the URL you have provided.",
+            "unknown": "Unexpected error"
+        },
+        "step": {
+            "calendarname": {
+                "data": {
+                    "calendarname": "name"
+                },
+                "data_description": {
+                    "calendarname": "The name to use for the calendar."
+                },
+                "title": "What should the calendar be named?"
+            },
+            "init": {
+                "data": {
+                    "organization": "Base URL"
+                },
+                "data_description": {
+                    "organization": "This is the first part of the URL that you access today for Nutrislice or FLIK (e.g. for 'https://wsa.api.flikisdining.com` the organization id is 'wsa.api.flikisdining.com')."
+                },
+                "title": "Enter the base URL:"
+            },
+            "school": {
+                "data": {
+                    "school": "School"
+                },
+                "data_description": {
+                    "school": "The school to use for the calendars."
+                },
+                "title": "Select the school:"
+            }
+        }
+    }
+}

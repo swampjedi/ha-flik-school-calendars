@@ -1,0 +1,12 @@
+{
+  "domain": "flik_menu",
+  "name": "Flik Menu",
+  "codeowners": [
+    "@swampjedi"
+  ],
+  "config_flow": true,
+  "documentation": "https://www.home-assistant.io/integrations/flik_menu",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "requirements": []
+}

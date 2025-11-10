@@ -12,9 +12,9 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-import homeassistant.util.dt as dt_util
 
-from .const import DOMAIN
+# import homeassistant.util.dt as dt_util
+from .const import CONF_CAL_NAME, DOMAIN
 from .coordinator import NutrisliceCalendarUpdateCoordinator
 from .nutrislice.api import NutrisliceAPI
 
@@ -47,10 +47,10 @@ async def async_setup_entry(
             api=api,
         )
         # calendar entity
-        device_id = f'{school["slug"]}_{school_menu["slug"]}'
+        device_id = f"{school['slug']}_{school_menu['slug']}"
         entity_id = async_generate_entity_id(ENTITY_ID_FORMAT, device_id, hass=hass)
         calendar = NutrisliceCalendarEntity(
-            name=school_menu["name"],
+            name=config_entry.data[CONF_CAL_NAME],  # school_menu["name"],
             entity_id=entity_id,
             school_slug=school["slug"],
             menu_slug=school_menu["slug"],

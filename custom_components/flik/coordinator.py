@@ -1,4 +1,5 @@
 """Data update coordinator for Nutrislice."""
+
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta
@@ -102,7 +103,7 @@ class NutrisliceCalendarUpdateCoordinator(DataUpdateCoordinator[CalendarEvent | 
         return all_events
 
     def _event_from_section(self, event_date, section):
-        event = CalendarEvent(
+        return CalendarEvent(
             start=event_date,
             end=event_date,
             summary=section["text"]
@@ -110,4 +111,3 @@ class NutrisliceCalendarUpdateCoordinator(DataUpdateCoordinator[CalendarEvent | 
             + ", ".join([f["name"] for f in section["food"]]),
             description=", ".join([f["name"] for f in section["food"]]),
         )
-        return event

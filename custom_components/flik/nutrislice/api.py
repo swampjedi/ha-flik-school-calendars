@@ -1,3 +1,5 @@
+"""Nutrislice API."""
+
 import logging
 
 import aiohttp
@@ -15,13 +17,17 @@ DEFAULT_HEADERS = {
 
 
 class NutrisliceAPI:
-    def __init__(self, org_id: str) -> None:
-        self.org_id = org_id
+    """Nutrislice API."""
+
+    def __init__(self, base_url: str) -> None:
+        """Constructor."""
+        self.base_url = base_url
+        self.org_id = ""
 
     async def get_settings(self) -> OrgSettings:
         """Get nutrislice settings for a specific org_id."""
         # build url
-        url = f"https://{self.org_id}.api.nutrislice.com/menu/api/settings"
+        url = f"https://{self.base_url}/menu/api/settings"
         # make request
         async with aiohttp.ClientSession() as session:
             try:
@@ -33,8 +39,8 @@ class NutrisliceAPI:
                         resp_payload,
                     )
                     # map to org settings
-                    org_settings = OrgSettings(
-                        org_id=self.org_id,
+                    return OrgSettings(
+                        org_id=self.base_url,
                         district_name=resp_payload["district_name"],
                         address1=resp_payload["address_1"],
                         address2=resp_payload["address_2"],
@@ -44,7 +50,6 @@ class NutrisliceAPI:
                         contact_email=resp_payload["contact_email"],
                         director_name=resp_payload["director_name"],
                     )
-                    return org_settings
             except aiohttp.ClientConnectorError as e:
                 _LOGGER.error("Error connecting to %s: %s", url, e)
                 raise InvalidOrganiztion(self.org_id) from e
@@ -52,7 +57,7 @@ class NutrisliceAPI:
     async def list_schools(self) -> list[School]:
         """List schools for a specific org_id."""
         # build url
-        url = f"https://{self.org_id}.api.nutrislice.com/menu/api/schools"
+        url = f"https://{self.base_url}/menu/api/schools"
         # make request
         async with aiohttp.ClientSession() as session:
             try:
@@ -92,7 +97,7 @@ class NutrisliceAPI:
     ) -> list[MenuDay]:
         """Get menu for a specific week based on the specified date."""
         # build url
-        url = f"https://{self.org_id}.api.nutrislice.com/menu/api/weeks/school/{school_slug}/menu-type/{menu}/{year}/{month:02}/{day:02}/"
+        url = f"https://{self.base_url}/menu/api/weeks/school/{school_slug}/menu-type/{menu}/{year}/{month:02}/{day:02}/"
         # make request
         async with aiohttp.ClientSession() as session:
             try:
@@ -126,14 +131,15 @@ class NutrisliceAPI:
                                 )
                                 continue
                             # parse food
-                            current_section["food"].append(
-                                MenuFood(
-                                    id=menu_item["id"],
-                                    name=menu_item["food"]["name"],
-                                    description=menu_item["food"]["description"],
-                                    category=menu_item["food"]["food_category"],
+                            if current_section is not None:
+                                current_section["food"].append(
+                                    MenuFood(
+                                        id=menu_item["id"],
+                                        name=menu_item["food"]["name"],
+                                        description=menu_item["food"]["description"],
+                                        category=menu_item["food"]["food_category"],
+                                    )
                                 )
-                            )
                         # append last section
                         if current_section is not None:
                             day["sections"].append(current_section)
